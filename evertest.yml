@@ -1,0 +1,76 @@
+services:
+  ereceiver_service:
+    image: docker.io/ereceiver:latest
+    container_name: ereceiver_service
+    ports:
+      - "8080:8080"
+    restart: on-failure:5
+    depends_on:
+      - local_database
+      - data_broker
+    volumes:
+      - /root/evertest/log/ereceiver-service.log:/var/log/ereceiver-service.log
+    networks:
+      - evertest_network
+
+  eprocessor_service:
+    image: docker.io/eprocessor:latest
+    container_name: eprocessor_service
+    environment:
+      - DATABASE_URL=mysql://user:password@db:3306/local_database
+      - DATABROKER_URL=http://data_broker:8083
+    ports:
+      - "8081:8081"
+    restart: on-failure:5
+    depends_on:
+      - local_database
+      - data_broker
+    volumes:
+      - /root/evertest/log/eprocessor-service.log:/var/log/eprocessor-service.log
+    networks:
+      - evertest_network
+
+  evalidator_service:
+    image: docker.io/evalidator:latest
+    container_name: evalidator_service
+    environment:
+      - VALIDATION_WINDOW_MS=300000
+    ports:
+      - "8082:8082"
+    restart: on-failure:5
+    depends_on:
+      - local_database
+      - data_broker
+    volumes:
+      - /root/evertest/log/evalidator-service.log:/var/log/evalidator-service.log
+    networks:
+      - evertest_network
+
+  local_database:
+    image: mysql:latest
+    container_name: local_database
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - /root/evertest/data/db_data:/var/lib/mysql
+    networks:
+      - evertest_network
+
+  data_broker:
+    image: docker.io/data_broker:latest
+    container_name: data_broker
+    ports:
+      - "8083:8083"
+    volumes:
+      - /root/evertest/data/data_broker:/var/lib/
+    networks:
+      - evertest_network
+
+networks:
+  evertest_network:
+    driver: bridge

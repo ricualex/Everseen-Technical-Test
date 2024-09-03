@@ -1,0 +1,103 @@
+[
+    {
+        "test_case_name": "Successful scenario with status complete",
+        "payload": {
+            "status": "complete",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+        
+    },
+    {
+        "test_case_name": "Successful scenario with status incomplete",
+        "payload": {
+            "status": "incomplete",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+
+    },
+    {
+        "test_case_name": "Successful scenario with status cancelled",
+        "payload": {
+            "status": "cancelled",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Unsuccessful scenario with status invalid",
+        "payload": {
+            "status": "invalid",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 500
+    },
+    {
+        "test_case_name": "Successful scenario with type value 1",
+        "payload": {
+            "status": "complete",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Successful scenario with type value 2",
+        "payload": {
+            "status": "complete",
+            "type": 2,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Successful scenario with type value 5",
+        "payload": {
+            "status": "complete",
+            "type": 5,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Successful scenario with type value 11",
+        "payload": {
+            "status": "complete",
+            "type": 11,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Unsuccessful scenario with type value 0 (invalid)",
+        "payload": {
+            "status": "complete",
+            "type": 0,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 500
+    },
+    {
+        "test_case_name": "Successful scenario with valid hash",
+        "payload": {
+            "status": "complete",
+            "type": 1,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+    },
+    {
+        "test_case_name": "Unsuccessful scenario with invalid hash",
+        "payload": {
+            "status": "complete",
+            "type": 1,
+            "hash": "z661f8009fa"
+        },
+        "expected_code": 500
+    }
+]
