@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://127.0.0.1:8080/api/v1/data"
+url = "http://0.0.0.0:8080/api/v1/data"
 log_file_path = "log/ereceiver-service.log"
 test_cases_path = "test_cases.json"
 

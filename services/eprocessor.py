@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from data.cloud_event import CloudEvent
 from contextlib import asynccontextmanager
-from utils.utils import subscribe
+from utils.utils import subscribe, eprocessor_notification_api_url
 import redis
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await subscribe(name="eprocessor", url="http://127.0.0.1:8083/api/v1/notification")
+    await subscribe(name="eprocessor", url=eprocessor_notification_api_url)
     yield
     
 app = FastAPI(lifespan=lifespan)

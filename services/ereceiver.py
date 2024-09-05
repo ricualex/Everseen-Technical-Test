@@ -3,12 +3,9 @@ from pydantic import BaseModel
 from typing import Dict
 from datetime import datetime
 from data.cloud_event import CloudEvent
-
-import json
 from httpx import AsyncClient, RequestError
-from utils.utils import data_broker_url
-
-
+from utils.utils import data_broker_url, ereceiver_notification_api_url
+import json
 
 app = FastAPI()
 
@@ -45,7 +42,7 @@ async def receive_data(payload: PayloadModel):
     
     async with AsyncClient() as client:
         subscriber = {
-            "url": "http://127.0.0.1:8080/api/v1/notification",
+            "url": ereceiver_notification_api_url,
             "name": "ereceiver"
         }
         try:

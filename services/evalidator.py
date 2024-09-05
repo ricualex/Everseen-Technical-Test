@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from httpx import AsyncClient, RequestError
 from collections import defaultdict
 from datetime import datetime, timezone
-from utils.utils import _generate_id, _get_current_time, _get_spec_version, _get_event_type, subscribe, data_broker_url
+from utils.utils import _generate_id, _get_current_time, _get_spec_version, _get_event_type, subscribe, evalidator_notification_api_url
 import os
 import threading
 import time
@@ -28,7 +28,7 @@ def log_error(message: str, data: List[str]):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await subscribe(name="evalidator", url="http://127.0.0.1:8082/api/v1/notification")
+    await subscribe(name="evalidator", url=evalidator_notification_api_url)
     yield
     
 app = FastAPI(lifespan=lifespan)
