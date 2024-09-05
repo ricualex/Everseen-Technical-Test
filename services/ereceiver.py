@@ -6,6 +6,7 @@ from data.cloud_event import CloudEvent
 from httpx import AsyncClient, RequestError
 from utils.utils import data_broker_url, ereceiver_notification_api_url
 import json
+import aiofiles
 
 app = FastAPI()
 
@@ -14,13 +15,13 @@ class PayloadModel(BaseModel):
     type: int
     hash: str
 
-def log_error(message: str, payload: PayloadModel):
+async def log_error(message: str, payload: PayloadModel):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f%z')
     payload_dict = payload.model_dump_json()
     log_entry = f"{timestamp} ERROR: [ eReceiver ] {message}: {json.dumps(payload_dict)}\n"
     log_file_path = "log/ereceiver-service.log"
-    with open(log_file_path, 'a') as log_file:
-        log_file.write(log_entry)
+    async with aiofiles.open(log_file_path, 'a') as log_file:
+        await log_file.write(log_entry)
 
 @app.post("/api/v1/data")
 async def receive_data(payload: PayloadModel):
@@ -29,15 +30,15 @@ async def receive_data(payload: PayloadModel):
     _hash = payload.hash
 
     if status not in {"complete", "incomplete", "cancelled"}:
-        log_error("Input data is not valid", payload)
+        await log_error("Input data is not valid", payload)
         raise HTTPException(status_code=500, detail="Input data is not valid")
 
     if _type not in {1, 2, 5, 11}:
-        log_error("Input data is not valid", payload)
+        await log_error("Input data is not valid", payload)
         raise HTTPException(status_code=500, detail="Input data is not valid")
 
     if not (isinstance(_hash, str) and len(_hash) == 32 and all(c in "0123456789abcdef" for c in _hash)):
-        log_error("Input data is not valid", payload)
+        await log_error("Input data is not valid", payload)
         raise HTTPException(status_code=500, detail="Input data is not valid")
     
     async with AsyncClient() as client:

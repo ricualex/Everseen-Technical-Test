@@ -1,0 +1,70 @@
+services:
+  ereceiver_service:
+    image: ereceiver-image:latest
+    container_name: ereceiver_service
+    ports:
+      - "8080:8080"
+    restart: on-failure:5
+    depends_on:
+      - redis_service
+      - databroker_service
+#    volumes:
+#      - /root/evertest/log/ereceiver-service.log:/var/log/ereceiver-service.log
+    networks:
+      - evertest_network
+
+  eprocessor_service:
+    image: eprocessor-image:latest
+    container_name: eprocessor_service
+#    environment:
+#      - DATABASE_URL=mysql://user:password@db:3306/local_database
+#      - DATABROKER_URL=http://data_broker:8083
+    ports:
+      - "8083:8083"
+    restart: on-failure:5
+    depends_on:
+      - redis_service
+      - databroker_service
+#    volumes:
+#      - /root/evertest/log/eprocessor-service.log:/var/log/eprocessor-service.log
+    networks:
+      - evertest_network
+
+  evalidator_service:
+    image: evalidator-image:latest
+    container_name: evalidator_service
+    environment:
+      - VALIDATION_WINDOW_MS=50
+    ports:
+      - "8082:8082"
+    restart: on-failure:5
+    depends_on:
+      - redis_service
+      - databroker_service
+ #   volumes:
+ #     - /root/evertest/log/evalidator-service.log:/var/log/evalidator-service.log
+    networks:
+      - evertest_network
+  redis_service:
+    image: redis:latest
+    container_name: redis_service
+    ports:
+      - "6379:6379"
+#    volumes:
+#      - /home/ricu/Desktop/Everseen-Technical-Test/redis:/data
+    networks:
+      - evertest_network
+
+  databroker_service:
+    image: databroker-image:latest
+    container_name: databroker_service
+    ports:
+      - "8081:8081"
+#    volumes:
+#      - /root/evertest/data/data_broker:/var/lib/
+    networks:
+      - evertest_network
+
+networks:
+  evertest_network:
+    driver: bridge
