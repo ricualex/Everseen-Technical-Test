@@ -5,10 +5,33 @@ from fastapi import HTTPException
 from httpx import AsyncClient, RequestError
 from datetime import datetime, timezone
 
-ereceiver_url = "http://127.0.0.1:8080/api"
-data_broker_url = "http://127.0.0.1:8081/api"
-evalidator_url = "http://127.0.0.1:8082/api"
-eprocessor_url = "http://127.0.0.1:8083/api"
+
+#Localhost
+
+# ereceiver_url = "http://0.0.0.0:8080/api"
+# data_broker_url = "http://0.0.0.0:8081/api"
+# evalidator_url = "http://0.0.0.0:8082/api"
+# eprocessor_url = "http://0.0.0.0:8083/api"
+
+# eprocessor_notification_api_url = "http://0.0.0.0:8083/api/v1/notification"
+# ereceiver_notification_api_url = "http://0.0.0.0:8080/api/v1/notification"
+# evalidator_notification_api_url = "http://0.0.0.0:8082/api/v1/notification"
+# redis_url = "localhost"
+
+
+
+#Deploy
+
+ereceiver_url = "http://ereceiver_service:8080/api"
+data_broker_url = "http://databroker_service:8081/api"
+evalidator_url = "http://evalidator_service:8082/api"
+eprocessor_url = "http://eprocessor_service:8083/api"
+
+eprocessor_notification_api_url = "http://eprocessor_service:8083/api/v1/notification"
+ereceiver_notification_api_url = "http://ereceiver_service:8080/api/v1/notification"
+evalidator_notification_api_url = "http://evalidator_service:8082/api/v1/notification"
+redis_url = "redis_service"
+
 
 spec_version = "1.0"
 event_type = "com.evertest.event"

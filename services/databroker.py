@@ -27,23 +27,28 @@ async def get_cache(id: str):
 
 @app.post("/api/publish")
 async def publish_cloud_event(request: Request):
-    body = await request.json()
-    source = body.get("source")
-    id = _generate_id()
-    current_date_time = _get_current_time()
-    data_event = DataEvent(status=body.get("status"), type=body.get("type"), hash=body.get("hash"))
-    cloud_event_object = CloudEvent(specversion=spec_version, 
-                                    type=type, 
-                                    source=source, 
-                                    subject="DATA", 
-                                    id=id,
-                                    time=current_date_time,
-                                    datacontenttype="application/json",
-                                    data=data_event
-                                    )
-    cache.append(cloud_event_object)
-    await notify_subscribers(cloud_event=cloud_event_object)
-    return {"message": f"Published successfuly"}
+    try:                
+        body = await request.json()
+        print(f"Received body: {body}")
+        source = body.get("source")
+        id = _generate_id()
+        current_date_time = _get_current_time()
+        data_event = DataEvent(status=body.get("status"), type=body.get("type"), hash=body.get("hash"))
+        cloud_event_object = CloudEvent(specversion=spec_version, 
+                                        type=type, 
+                                        source=source, 
+                                        subject="DATA", 
+                                        id=id,
+                                        time=current_date_time,
+                                        datacontenttype="application/json",
+                                        data=data_event
+                                        )
+        cache.append(cloud_event_object)
+        await notify_subscribers(cloud_event=cloud_event_object)
+        return {"message": f"Published successfuly"}
+    except Exception as e:
+        print(f"Error in /api/publish: {e}")
+        raise HTTPException(status_code=500, detail="Failed to publish event")
 
 @app.get("/cache/get_all")
 async def get_all_cache():
