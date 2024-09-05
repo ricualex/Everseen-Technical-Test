@@ -1,12 +1,8 @@
-# [Python] Using Python, write a script to send valid and invalid POST requests to the eReceiver service endpoint. Include checks for
-# expected responses and error logs.
-
 import requests
 import json
 
-url = "http://127.0.0.1:8000/api/v1/data"
-# log_file_path = "/var/log/ereceiver-service.log"
-log_file_path = "/home/ricu/Desktop/everseen/ereceiver-service.log"
+url = "http://127.0.0.1:8080/api/v1/data"
+log_file_path = "log/ereceiver-service.log"
 test_cases_path = "test_cases.json"
 
 def check_log_file(test):

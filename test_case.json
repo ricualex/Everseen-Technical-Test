@@ -1,0 +1,12 @@
+[
+    {
+        "test_case_name": "Successful scenario with status complete",
+        "payload": {
+            "status": "complete",
+            "type": 5,
+            "hash": "661f8009fa8e56a9d0e94a0a644397d7"
+        },
+        "expected_code": 200
+        
+    }
+]
